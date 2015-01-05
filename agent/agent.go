@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/shirou/gopsutil"
+	"github.com/shirou/gopsutil/host"
 )
 
 var (
@@ -362,7 +362,7 @@ func createFromDetails(bname, bver, osname, osver string, c []string) string {
 
 // osName returns the name of the OS.
 func osName() string {
-	h, err := gopsutil.HostInfo()
+	h, err := host.HostInfo()
 	if err != nil || h.OS == "" {
 		return "Linux"
 	}
@@ -371,7 +371,7 @@ func osName() string {
 
 // osVersion returns the OS version.
 func osVersion() string {
-	h, err := gopsutil.HostInfo()
+	h, err := host.HostInfo()
 	if err != nil || h.PlatformVersion == "" {
 		return "0.0"
 	}
