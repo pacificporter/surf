@@ -316,11 +316,10 @@ func Format(bname, bver string) string {
 		format, ok := data.Formats[majVer]
 		if ok {
 			return format
-		} else {
-			top := TopVersion(bname)
-			majVer = strings.Split(top, ".")[0]
-			return data.Formats[majVer]
 		}
+		top := TopVersion(bname)
+		majVer = strings.Split(top, ".")[0]
+		return data.Formats[majVer]
 	}
 
 	return Database["default"].Formats["1"]

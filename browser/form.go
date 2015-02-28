@@ -71,9 +71,8 @@ func (f *Form) SetAction(aurl string) {
 func (f *Form) Field(name string) (string, bool) {
 	if f.definedFields[name] {
 		return f.fields.Get(name), true
-	} else {
-		return "", false
 	}
+	return "", false
 }
 
 // Input sets the value of a form field.
@@ -169,15 +168,12 @@ func (f *Form) send(buttonName, buttonValue string) error {
 
 	if strings.ToUpper(method) == "GET" {
 		return f.bow.OpenForm(aurl.String(), values)
-	} else {
-		enctype, _ := f.selection.Attr("enctype")
-		if enctype == "multipart/form-data" {
-			return f.bow.PostMultipart(aurl.String(), values)
-		}
-		return f.bow.PostForm(aurl.String(), values)
 	}
-
-	return nil
+	enctype, _ := f.selection.Attr("enctype")
+	if enctype == "multipart/form-data" {
+		return f.bow.PostMultipart(aurl.String(), values)
+	}
+	return f.bow.PostForm(aurl.String(), values)
 }
 
 // Serialize converts the form fields into a url.Values type.
