@@ -459,42 +459,66 @@ func (bow *Browser) Download(o io.Writer) (int64, error) {
 
 // Url returns the page URL as a string.
 func (bow *Browser) Url() *url.URL {
+	if bow.state == nil || bow.state.Response == nil {
+		return &url.URL{}
+	}
 	return bow.state.Request.URL
 }
 
 // StatusCode returns the response status code.
 func (bow *Browser) StatusCode() int {
+	if bow.state == nil || bow.state.Response == nil {
+		return 0
+	}
 	return bow.state.Response.StatusCode
 }
 
 // Title returns the page title.
 func (bow *Browser) Title() string {
+	if bow.state == nil || bow.state.Dom == nil {
+		return ""
+	}
 	return bow.state.Dom.Find("title").Text()
 }
 
 // ResponseHeaders returns the page headers.
 func (bow *Browser) ResponseHeaders() http.Header {
+	if bow.state == nil || bow.state.Response == nil {
+		return http.Header{}
+	}
 	return bow.state.Response.Header
 }
 
 // Response returns the pointer to http.Response.
 func (bow *Browser) Response() *http.Response {
+	if bow.state == nil {
+		return &http.Response{}
+	}
 	return bow.state.Response
 }
 
 // Body returns the page body as a string of html.
 func (bow *Browser) Body() string {
+	if bow.state == nil || bow.state.Dom == nil {
+		return ""
+	}
 	body, _ := bow.state.Dom.Find("body").Html()
 	return body
 }
 
 // Dom returns the inner *goquery.Selection.
 func (bow *Browser) Dom() *goquery.Selection {
+	if bow.state == nil || bow.state.Dom == nil {
+		return &goquery.Selection{}
+	}
 	return bow.state.Dom.First()
 }
 
 // Find returns the dom selections matching the given expression.
 func (bow *Browser) Find(expr string) *goquery.Selection {
+	if bow.state == nil || bow.state.Dom == nil {
+		return &goquery.Selection{}
+	}
 	return bow.state.Dom.Find(expr)
 }
 

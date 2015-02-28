@@ -104,7 +104,7 @@ type FileBookmarks struct {
 
 // NewFileBookmarks creates and returns a new *FileBookmarks type.
 func NewFileBookmarks(file string) (*FileBookmarks, error) {
-	var bookmarks BookmarksMap = nil
+	var bookmarks BookmarksMap
 	if !util.FileExists(file) {
 		bookmarks = make(BookmarksMap, initialBookmarksCapacity)
 	} else {
