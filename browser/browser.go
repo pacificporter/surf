@@ -10,8 +10,8 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/haruyama/surf/errors"
-	"github.com/haruyama/surf/jar"
+	"github.com/pacificporter/surf/errors"
+	"github.com/pacificporter/surf/jar"
 )
 
 // Attribute represents a Browser capability.

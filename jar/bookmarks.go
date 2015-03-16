@@ -5,8 +5,8 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/haruyama/surf/errors"
-	"github.com/haruyama/surf/util"
+	"github.com/pacificporter/surf/errors"
+	"github.com/pacificporter/surf/util"
 )
 
 // initialBookmarksCapacity is the initial capacity for the bookmarks map.

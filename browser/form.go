@@ -5,7 +5,7 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/haruyama/surf/errors"
+	"github.com/pacificporter/surf/errors"
 )
 
 // Submittable represents an element that may be submitted, such as a form.

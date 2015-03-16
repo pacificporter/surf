@@ -7,7 +7,7 @@ import (
 	"strings"
 	"testing"
 
-	"github.com/haruyama/surf/jar"
+	"github.com/pacificporter/surf/jar"
 	"github.com/headzoo/ut"
 )
 

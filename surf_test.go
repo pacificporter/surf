@@ -7,8 +7,8 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/haruyama/surf/browser"
-	"github.com/haruyama/surf/jar"
+	"github.com/pacificporter/surf/browser"
+	"github.com/pacificporter/surf/jar"
 	"github.com/headzoo/ut"
 )
 

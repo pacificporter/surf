@@ -2,9 +2,9 @@
 package surf
 
 import (
-	"github.com/haruyama/surf/agent"
-	"github.com/haruyama/surf/browser"
-	"github.com/haruyama/surf/jar"
+	"github.com/pacificporter/surf/agent"
+	"github.com/pacificporter/surf/browser"
+	"github.com/pacificporter/surf/jar"
 )
 
 var (

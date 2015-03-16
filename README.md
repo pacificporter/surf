@@ -1,6 +1,6 @@
 [![wercker status](https://app.wercker.com/status/785ce5f245f0f48959452d698485f55f/m "wercker status")](https://app.wercker.com/project/bykey/785ce5f245f0f48959452d698485f55f)
 
-This is forked version by haruyama. Original: https://github.com/headzoo/surf
+This is forked version by pacificporter. Original: https://github.com/headzoo/surf
 
 Surf
 ====
@@ -23,13 +23,13 @@ _This project is very young, and the API is bound to change often. Use at your o
 
 ### Installation
 Download the library using go.
-`go get github.com/haruyama/surf`
+`go get github.com/pacificporter/surf`
 
 You'll need the ut library if you want to run the unit tests.
 `go get github.com/headzoo/ut`
 
 Import the library into your project.
-`import "github.com/haruyama/surf"`
+`import "github.com/pacificporter/surf"`
 
 
 ### General Usage
