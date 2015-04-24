@@ -59,6 +59,9 @@ type Browsable interface {
 	// SetHeadersJar sets the headers the browser sends with each request.
 	SetHeadersJar(h http.Header)
 
+	// SetTransport sets the Transport of the browser. It can be used for use Proxy.
+	SetTransport(t *http.Transport)
+
 	// AddRequestHeader adds a header the browser sends with each request.
 	AddRequestHeader(name, value string)
 
@@ -172,6 +175,9 @@ type Browser struct {
 
 	// refresh is a timer used to meta refresh pages.
 	refresh *time.Timer
+
+	// transport is the browser connection transport.
+	transport *http.Transport
 }
 
 // Open requests the given URL using the GET method.
@@ -427,6 +433,11 @@ func (bow *Browser) SetHeadersJar(h http.Header) {
 	bow.headers = h
 }
 
+// SetTransport sets the Transport of the browser. It can be used for set Proxy.
+func (bow *Browser) SetTransport(t *http.Transport) {
+	bow.transport = t
+}
+
 // AddRequestHeader sets a header the browser sends with each request.
 func (bow *Browser) AddRequestHeader(name, value string) {
 	bow.headers.Add(name, value)
@@ -529,6 +540,11 @@ func (bow *Browser) buildClient() *http.Client {
 	client := &http.Client{}
 	client.Jar = bow.cookies
 	client.CheckRedirect = bow.shouldRedirect
+
+	if bow.transport != nil {
+		client.Transport = bow.transport
+	}
+
 	return client
 }
 
