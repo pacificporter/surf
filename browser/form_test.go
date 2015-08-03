@@ -4,11 +4,10 @@ import (
 	"fmt"
 	"net/http"
 	"net/http/httptest"
-	"strings"
 	"testing"
 
-	"github.com/pacificporter/surf/jar"
 	"github.com/headzoo/ut"
+	"github.com/pacificporter/surf/jar"
 )
 
 func TestBrowserForm(t *testing.T) {
@@ -55,28 +54,11 @@ func TestBrowserForm(t *testing.T) {
 	ut.AssertContains("submit2=submitted2", bow.Body())
 }
 
-var htmlForm = `<!doctype html>
-<html>
-	<head>
-		<title>Echo Form</title>
-	</head>
-	<body>
-		<form method="post" action="/" name="default">
-			<input type="text" name="age" value="" />
-			<input type="radio" name="gender" value="male" />
-			<input type="radio" name="gender" value="female" />
-			<input type="submit" name="submit1" value="submitted1" />
-			<input type="submit" name="submit2" value="submitted2" />
-		</form>
-	</body>
-</html>
-`
-
 func TestBrowserForm2(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Fprint(w, htmlForm2)
+			fmt.Fprint(w, htmlForm)
 		} else {
 			r.ParseForm()
 			fmt.Fprint(w, r.Form.Encode())
@@ -94,32 +76,37 @@ func TestBrowserForm2(t *testing.T) {
 	f, err := bow.Form("[name='default']")
 	ut.AssertNil(err)
 
-	err = f.Input("age", "54")
+	v, ok := f.Field("ageage")
+	ut.AssertFalse(ok)
+	ut.AssertEquals("", v)
+
+	err = f.Add("ageage", "55")
 	ut.AssertNil(err)
-	err = f.Input("agee", "54")
-	ut.AssertNotNil(err)
 
-	err = f.CheckBox("music", []string{"rock", "fusion"})
-	ut.AssertNil(err)
-
-	err = f.CheckBox("music2", []string{"rock", "fusion"})
-	ut.AssertNotNil(err)
-
+	f.Input("gender", "male")
 	err = f.Click("submit2")
-
 	ut.AssertNil(err)
-	ut.AssertContains("company=none", bow.Body())
-	ut.AssertContains("age=54", bow.Body())
+	ut.AssertContains("ageage=55", bow.Body())
 	ut.AssertContains("gender=male", bow.Body())
-
-	ut.AssertFalse(strings.Contains(bow.Body(), "music=jazz"))
-	ut.AssertContains("music=rock", bow.Body())
-	ut.AssertContains("music=fusion", bow.Body())
-
-	ut.AssertContains("hobby=Dance", bow.Body())
-	ut.AssertContains("city=NY", bow.Body())
 	ut.AssertContains("submit2=submitted2", bow.Body())
 }
+
+var htmlForm = `<!doctype html>
+<html>
+	<head>
+		<title>Echo Form</title>
+	</head>
+	<body>
+		<form method="post" action="/" name="default">
+			<input type="text" name="age" value="" />
+			<input type="radio" name="gender" value="male" />
+			<input type="radio" name="gender" value="female" />
+			<input type="submit" name="submit1" value="submitted1" />
+			<input type="submit" name="submit2" value="submitted2" />
+		</form>
+	</body>
+</html>
+`
 
 var htmlForm2 = `<!doctype html>
 <html>

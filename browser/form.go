@@ -15,8 +15,10 @@ type Submittable interface {
 	SetAction(string)
 	Field(name string) (string, bool)
 	Input(name, value string) error
+	Add(name, value string) error
 	DeleteField(name string) error
 	InputSlice(name string, values []string) error
+	AddSlice(name string, values []string) error
 	CheckBox(name string, values []string) error
 	Click(button string) error
 	Submit() error
@@ -85,6 +87,12 @@ func (f *Form) Input(name, value string) error {
 		"No input found with name '%s'.", name)
 }
 
+// Add adds the value of a form field.
+func (f *Form) Add(name, value string) error {
+	f.definedFields[name] = true
+	return f.Input(name, value)
+}
+
 // DeleteField deletes a form field
 func (f *Form) DeleteField(name string) error {
 	if f.definedFields[name] {
@@ -106,6 +114,12 @@ func (f *Form) InputSlice(name string, values []string) error {
 	}
 	return errors.NewElementNotFound(
 		"No input found with name '%s'.", name)
+}
+
+// AddSlice adds the values of a form field.
+func (f *Form) AddSlice(name string, values []string) error {
+	f.definedFields[name] = true
+	return f.InputSlice(name, values)
 }
 
 // CheckBox sets the values of a form field.
