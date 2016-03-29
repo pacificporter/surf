@@ -1,5 +1,5 @@
-hash: 7423b5aec1a5cf5aa6ed9344496531ecf7a772ae36f471ebe48a75ca6260cd15
-updated: 2016-03-29T18:25:59.041063969+09:00
+hash: ea0310bccd7c06ff23fcbe6f607ee96ff19b3805349047c834c37e9c665509cb
+updated: 2016-03-29T18:31:49.530488471+09:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 3ad29d1ad1c4f2023e355603324348cf1f4b2d48
@@ -7,6 +7,8 @@ imports:
   version: 572eabb84c424e76a0d39d31510dd7dfd62f70b2
   subpackages:
   - oleutil
+- name: github.com/headzoo/ut
+  version: 5657594ccf1d57af95374cc26701196a441deccc
 - name: github.com/PuerkitoBio/goquery
   version: 4126223a86db8598275b29db04d511cfdab67cf1
 - name: github.com/shirou/gopsutil
