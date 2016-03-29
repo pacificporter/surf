@@ -353,8 +353,8 @@ func createFromDetails(bname, bver, osname, osver string, c []string) string {
 	data := TemplateData{bname, bver, osname, osver, comments}
 	buff := &bytes.Buffer{}
 	t := template.New("formatter")
-	t.Parse(Format(bname, bver))
-	t.Execute(buff, data)
+	_, _ = t.Parse(Format(bname, bver))
+	_ = t.Execute(buff, data)
 
 	return buff.String()
 }

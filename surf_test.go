@@ -7,9 +7,9 @@ import (
 	"net/http/httptest"
 	"testing"
 
+	"github.com/headzoo/ut"
 	"github.com/pacificporter/surf/browser"
 	"github.com/pacificporter/surf/jar"
-	"github.com/headzoo/ut"
 )
 
 func TestGet(t *testing.T) {
@@ -51,7 +51,7 @@ func TestDownload(t *testing.T) {
 	defer ts.Close()
 
 	bow := NewBrowser()
-	bow.Open(ts.URL)
+	ut.AssertNil(bow.Open(ts.URL))
 
 	buff := &bytes.Buffer{}
 	l, err := bow.Download(buff)
@@ -102,14 +102,13 @@ func TestBookmarks(t *testing.T) {
 	bow := NewBrowser()
 	bow.SetBookmarksJar(bookmarks)
 
-	bookmarks.Save("test1", ts.URL)
-	bow.OpenBookmark("test1")
+	ut.AssertNil(bookmarks.Save("test1", ts.URL))
+	ut.AssertNil(bow.OpenBookmark("test1"))
 	ut.AssertEquals("Surf Page 1", bow.Title())
 	ut.AssertContains("<p>Hello, Surf!</p>", bow.Body())
 
-	err := bow.Bookmark("test2")
-	ut.AssertNil(err)
-	bow.OpenBookmark("test2")
+	ut.AssertNil(bow.Bookmark("test2"))
+	ut.AssertNil(bow.OpenBookmark("test2"))
 	ut.AssertEquals("Surf Page 1", bow.Title())
 }
 
