@@ -58,7 +58,7 @@ func TestBrowserForm2(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Fprint(w, htmlForm)
+			fmt.Fprint(w, htmlForm2)
 		} else {
 			_ = r.ParseForm()
 			fmt.Fprint(w, r.Form.Encode())
@@ -80,14 +80,24 @@ func TestBrowserForm2(t *testing.T) {
 	ut.AssertFalse(ok)
 	ut.AssertEquals("", v)
 
+	v, ok = f.Field("city")
+	ut.AssertTrue(ok)
+	ut.AssertEquals("NY", v)
+
+	v, ok = f.Field("not-selected")
+	ut.AssertTrue(ok)
+	ut.AssertEquals("Kawasaki", v)
+
 	ut.AssertNil(f.Add("ageage", "55"))
 
 	ut.AssertNil(f.Input("gender", "male"))
 
-	ut.AssertNil(f.Click("submit2"))
+	ut.AssertNil(f.Click("submit3"))
+
 	ut.AssertContains("ageage=55", bow.Body())
 	ut.AssertContains("gender=male", bow.Body())
-	ut.AssertContains("submit2=submitted2", bow.Body())
+	ut.AssertContains("submit3=submitted3", bow.Body())
+
 }
 
 var htmlForm = `<!doctype html>
@@ -126,8 +136,13 @@ var htmlForm2 = `<!doctype html>
 				<option value="NY" selected>
 				<option value="Tokyo">
 			</select>
+			<select name="not-selected">
+				<option value="Kawasaki">
+				<option value="Tokyo">
+				<option value="NY">
+			</select>
 			<textarea name="hobby">Dance</textarea>
-			<input type="submit" name="submit2" value="submitted2">
+			<input type="submit" name="submit3" value="submitted3">
 		</form>
 	</body>
 </html>

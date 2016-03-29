@@ -239,12 +239,15 @@ func serializeForm(sel *goquery.Selection) (map[string]bool, url.Values, url.Val
 			return
 		}
 		definedFields[name] = true
-		s.Find("option[selected]").Each(func(_ int, so *goquery.Selection) {
-			val, ok := so.Attr("value")
+		val, ok := s.Find("option[selected]").Attr("value")
+		if ok {
+			fields.Add(name, val)
+		} else {
+			val, ok := s.Find("option:first-child").Attr("value")
 			if ok {
 				fields.Add(name, val)
 			}
-		})
+		}
 	})
 
 	textarea := sel.Find("textarea")
