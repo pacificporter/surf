@@ -7,8 +7,8 @@ init: go_init
 
 go_check:
 	go vet ${NOVENDOR}
-	errcheck ${NOVENDOR}
-	echo -n ${NOVENDOR} | xargs -d ' ' -L1 golint | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
+	errcheck -ignore="Close|Run|Write" ${NOVENDOR}
+	echo -n ${NOVENDOR} | xargs -d ' ' -L1 golint  | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
 	gocyclo -over 20 ${NOVENDORX}
 	unconvert -v ${NOVENDORX} | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
 
