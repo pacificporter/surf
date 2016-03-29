@@ -1,4 +1,4 @@
-[![wercker status](https://app.wercker.com/status/785ce5f245f0f48959452d698485f55f/m "wercker status")](https://app.wercker.com/project/bykey/785ce5f245f0f48959452d698485f55f)
+[![wercker status](https://app.wercker.com/status/f2bd60d9f980ba2639ab8e747725a6f3/m "wercker status")](https://app.wercker.com/project/bykey/f2bd60d9f980ba2639ab8e747725a6f3)
 
 This is forked version by pacificporter. Original: https://github.com/headzoo/surf
 

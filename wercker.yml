@@ -1,21 +1,38 @@
-box: odoku/golang
+box: pacificporter/golang:1.6-4.3.0
 build:
   steps:
-    - setup-go-workspace
-
     - script:
-        name: go get
+        name: copy source
         code: |
-          cd $WERCKER_SOURCE_DIR
-          go version
-          go get -t ./...
-
+          mkdir -p $GOPATH/src/github.com/pacificporter
+          cp -ar $WERCKER_SOURCE_DIR/ $GOPATH/src/github.com/pacificporter/surf
     - script:
-        name: go build
+        name: glide install
+        cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
-          go build ./...
-
+          glide install
+    - script:
+        name: go vet
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          go vet $(glide novendor)
+#     - script:
+#         name: errcheck
+#         cwd: $GOPATH/src/github.com/pacificporter/surf
+#         code: |
+#           errcheck $(glide novendor)
+#     - script:
+#         name: golint
+#         cwd: $GOPATH/src/github.com/pacificporter/surf
+#         code: |
+#           echo -n $(glide novendor) | xargs -d ' ' -L1 golint | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
+#     - script:
+#         name: gocyclo
+#         cwd: $GOPATH/src/github.com/pacificporter/surf
+#         code: |
+#           gocyclo -over 20 $(glide novendor -x)
     - script:
         name: go test
+        cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
-          go test ./... -v
+          TZ=Japan go test $(glide novendor)
