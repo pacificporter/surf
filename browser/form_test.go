@@ -16,7 +16,7 @@ func TestBrowserForm(t *testing.T) {
 		if r.Method == "GET" {
 			fmt.Fprint(w, htmlForm)
 		} else {
-			r.ParseForm()
+			_ = r.ParseForm()
 			fmt.Fprint(w, r.Form.Encode())
 		}
 	}))
@@ -40,15 +40,15 @@ func TestBrowserForm(t *testing.T) {
 	ut.AssertFalse(ok)
 	ut.AssertEquals("", v)
 
-	f.Input("age", "55")
+	ut.AssertNil(f.Input("age", "55"))
 
 	v, ok = f.Field("age")
 	ut.AssertTrue(ok)
 	ut.AssertEquals("55", v)
 
-	f.Input("gender", "male")
-	err = f.Click("submit2")
-	ut.AssertNil(err)
+	ut.AssertNil(f.Input("gender", "male"))
+
+	ut.AssertNil(f.Click("submit2"))
 	ut.AssertContains("age=55", bow.Body())
 	ut.AssertContains("gender=male", bow.Body())
 	ut.AssertContains("submit2=submitted2", bow.Body())
@@ -60,7 +60,7 @@ func TestBrowserForm2(t *testing.T) {
 		if r.Method == "GET" {
 			fmt.Fprint(w, htmlForm2)
 		} else {
-			r.ParseForm()
+			_ = r.ParseForm()
 			fmt.Fprint(w, r.Form.Encode())
 		}
 	}))
@@ -88,12 +88,12 @@ func TestBrowserForm2(t *testing.T) {
 	ut.AssertTrue(ok)
 	ut.AssertEquals("Kawasaki", v)
 
-	err = f.Add("ageage", "55")
-	ut.AssertNil(err)
+	ut.AssertNil(f.Add("ageage", "55"))
 
-	f.Input("gender", "male")
-	err = f.Click("submit3")
-	ut.AssertNil(err)
+	ut.AssertNil(f.Input("gender", "male"))
+
+	ut.AssertNil(f.Click("submit3"))
+
 	ut.AssertContains("ageage=55", bow.Body())
 	ut.AssertContains("gender=male", bow.Body())
 	ut.AssertContains("submit3=submitted3", bow.Body())

@@ -625,7 +625,7 @@ func (bow *Browser) postSend() {
 					bow.refresh = time.NewTimer(dur)
 					go func() {
 						<-bow.refresh.C
-						bow.Reload()
+						_ = bow.Reload()
 					}()
 				}
 			}

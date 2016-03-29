@@ -16,21 +16,21 @@ build:
         cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
           go vet $(glide novendor)
-#     - script:
-#         name: errcheck
-#         cwd: $GOPATH/src/github.com/pacificporter/surf
-#         code: |
-#           errcheck $(glide novendor)
-#     - script:
-#         name: golint
-#         cwd: $GOPATH/src/github.com/pacificporter/surf
-#         code: |
-#           echo -n $(glide novendor) | xargs -d ' ' -L1 golint | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
-#     - script:
-#         name: gocyclo
-#         cwd: $GOPATH/src/github.com/pacificporter/surf
-#         code: |
-#           gocyclo -over 20 $(glide novendor -x)
+    - script:
+        name: errcheck
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          errcheck -ignore="Close|Run|Write" ${NOVENDOR}
+    - script:
+        name: golint
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          echo -n $(glide novendor) | xargs -d ' ' -L1 golint  | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
+    - script:
+        name: gocyclo
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          gocyclo -over 20 $(glide novendor -x)
     - script:
         name: go test
         cwd: $GOPATH/src/github.com/pacificporter/surf
