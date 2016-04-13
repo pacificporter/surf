@@ -12,7 +12,7 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: 4126223a86db8598275b29db04d511cfdab67cf1
 - name: github.com/shirou/gopsutil
-  version: be06a94d4487f6562f3c8dbfa6e51689406e0c61
+  version: 5daf090513cd856198b04a3f65dd7539c7602112
   subpackages:
   - host
   - internal/common
