@@ -1,32 +1,32 @@
 hash: ea0310bccd7c06ff23fcbe6f607ee96ff19b3805349047c834c37e9c665509cb
-updated: 2016-06-21T14:37:18.981716791+09:00
+updated: 2016-10-20T10:56:36.540173715+09:00
 imports:
 - name: github.com/andybalholm/cascadia
-  version: 3ad29d1ad1c4f2023e355603324348cf1f4b2d48
+  version: 65919c611220063037b1db8eb334acaf17a6d8ea
 - name: github.com/go-ole/go-ole
-  version: 572eabb84c424e76a0d39d31510dd7dfd62f70b2
+  version: 7dfdcf409020452e29b4babcbb22f984d2aa308a
   subpackages:
   - oleutil
 - name: github.com/headzoo/ut
   version: 5657594ccf1d57af95374cc26701196a441deccc
 - name: github.com/PuerkitoBio/goquery
-  version: 77cbaef46a3af185a3afb87f88a366f3dee2a904
+  version: 152b1a2c8f5d0340f658bb656032a39b94e52958
 - name: github.com/shirou/gopsutil
-  version: 5c1bfed85550640833e8bbf50156d114ba99fbf2
+  version: c2dd8ca3d4d77d2516214e7d99b703d5ba82c1da
   subpackages:
+  - cpu
   - host
   - internal/common
-  - process
-  - cpu
   - mem
   - net
+  - process
 - name: github.com/shirou/w32
-  version: 3c9377fc6748f222729a8270fe2775d149a249ad
+  version: bb4de0191aa41b5507caa14b0650cdbddcd9280b
 - name: github.com/StackExchange/wmi
-  version: f3e2bae1e0cb5aef83e319133eabfee30013a4a5
+  version: e54cbda6595d7293a7a468ccf9525f6bc8887f99
 - name: golang.org/x/net
-  version: 7c71ca708c71bcbd0e6c856b01468ee07fe24557
+  version: 3bafa3320efdf0c95d056586aa9abdd05ad72ee1
   subpackages:
   - html
   - html/atom
-devImports: []
+testImports: []
