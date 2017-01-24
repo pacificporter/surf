@@ -52,7 +52,7 @@ func NewMemoryBookmarks() *MemoryBookmarks {
 func (b *MemoryBookmarks) Save(name, url string) error {
 	if b.Has(name) {
 		return errors.New(
-			"Bookmark with the name '%s' already exists.", name)
+			"bookmark with the name '%s' already exists", name)
 	}
 	b.bookmarks[name] = url
 	return nil
@@ -65,7 +65,7 @@ func (b *MemoryBookmarks) Save(name, url string) error {
 func (b *MemoryBookmarks) Read(name string) (string, error) {
 	if !b.Has(name) {
 		return "", errors.New(
-			"A bookmark does not exist with the name '%s'.", name)
+			"a bookmark does not exist with the name '%s'", name)
 	}
 	return b.bookmarks[name], nil
 }
@@ -131,7 +131,7 @@ func NewFileBookmarks(file string) (*FileBookmarks, error) {
 func (b *FileBookmarks) Save(name, url string) error {
 	if b.Has(name) {
 		return errors.New(
-			"Bookmark with the name '%s' already exists.", name)
+			"bookmark with the name '%s' already exists", name)
 	}
 	b.bookmarks[name] = url
 	return b.writeToFile()
@@ -144,7 +144,7 @@ func (b *FileBookmarks) Save(name, url string) error {
 func (b *FileBookmarks) Read(name string) (string, error) {
 	if !b.Has(name) {
 		return "", errors.New(
-			"A bookmark does not exist with the name '%s'.", name)
+			"a bookmark does not exist with the name '%s'", name)
 	}
 	return b.bookmarks[name], nil
 }
