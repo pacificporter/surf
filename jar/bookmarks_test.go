@@ -1,9 +1,10 @@
 package jar
 
 import (
-	"github.com/headzoo/ut"
 	"os"
 	"testing"
+
+	"github.com/headzoo/ut"
 )
 
 func TestMemoryBookmarks(t *testing.T) {
@@ -37,8 +38,9 @@ func assertBookmarks(b BookmarksJar) {
 	ut.AssertNil(err)
 	ut.AssertEquals("http://localhost", url)
 	url, err = b.Read("test2")
+	ut.AssertNil(err)
 	ut.AssertEquals("http://127.0.0.1", url)
-	url, err = b.Read("test3")
+	_, err = b.Read("test3")
 	ut.AssertNotNil(err)
 
 	r := b.Remove("test2")
