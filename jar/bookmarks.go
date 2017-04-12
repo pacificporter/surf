@@ -190,9 +190,5 @@ func (b *FileBookmarks) writeToFile() (err error) {
 		err = fout.Close()
 	}()
 	_, err = fout.Write(j)
-	if err != nil {
-		return err
-	}
-
 	return err
 }

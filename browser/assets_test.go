@@ -2,9 +2,10 @@ package browser
 
 import (
 	"bytes"
-	"github.com/headzoo/ut"
 	"net/url"
 	"testing"
+
+	"github.com/headzoo/ut"
 )
 
 func TestDownload(t *testing.T) {
@@ -30,29 +31,22 @@ func TestDownloadAsync(t *testing.T) {
 	out1 := &bytes.Buffer{}
 	out2 := &bytes.Buffer{}
 
-	queue := 2
 	DownloadAssetAsync(asset1, out1, ch)
 	DownloadAssetAsync(asset2, out2, ch)
 
-	for {
-		select {
-		case result := <-ch:
-			ut.AssertGreaterThan(0, int(result.Size))
-			if result.Asset == asset1 {
-				ut.AssertEquals(int(result.Size), out1.Len())
-			} else if result.Asset == asset2 {
-				ut.AssertEquals(int(result.Size), out2.Len())
-			} else {
-				t.Failed()
-			}
-			queue--
-			if queue == 0 {
-				goto COMPLETE
-			}
+	queue := 2
+	for ; queue > 0; queue-- {
+		result := <-ch
+		ut.AssertGreaterThan(0, int(result.Size))
+		if result.Asset == asset1 {
+			ut.AssertEquals(int(result.Size), out1.Len())
+		} else if result.Asset == asset2 {
+			ut.AssertEquals(int(result.Size), out2.Len())
+		} else {
+			t.Failed()
 		}
 	}
 
-COMPLETE:
 	close(ch)
 	ut.AssertEquals(0, queue)
 }
