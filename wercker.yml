@@ -1,4 +1,4 @@
-box: pacificporter/golang:1.9.1-6.11.1
+box: pacificporter/golang:1.9.2-8.9.0
 build:
   steps:
     - script:
@@ -36,6 +36,11 @@ build:
         cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
           gocyclo -over 20 $(glide novendor -x)
+    - script:
+        name: ineffassign
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          ineffassign $(glide novendor -x)
     - script:
         name: go test
         cwd: $GOPATH/src/github.com/pacificporter/surf
