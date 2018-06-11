@@ -14,10 +14,10 @@ func TestBrowserForm(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Fprint(w, htmlForm)
+			_, _ = fmt.Fprint(w, htmlForm)
 		} else {
 			_ = r.ParseForm()
-			fmt.Fprint(w, r.Form.Encode())
+			_, _ = fmt.Fprint(w, r.Form.Encode())
 		}
 	}))
 	defer ts.Close()
@@ -58,10 +58,10 @@ func TestBrowserForm2(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Fprint(w, htmlForm2)
+			_, _ = fmt.Fprint(w, htmlForm2)
 		} else {
 			_ = r.ParseForm()
-			fmt.Fprint(w, r.Form.Encode())
+			_, _ = fmt.Fprint(w, r.Form.Encode())
 		}
 	}))
 	defer ts.Close()
