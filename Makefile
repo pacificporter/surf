@@ -15,14 +15,14 @@ go_check:
 	ineffassign ${NOVENDORX}
 
 go_tool_install:
-	go get -u golang.org/x/tools/cmd/vet
 	go get -u github.com/kisielk/errcheck
 	go get -u github.com/golang/lint/golint
 	go get -u golang.org/x/tools/cmd/goimports
 	go get -u github.com/tcnksm/gotests
 	go get -u github.com/Masterminds/glide
-	go get -u github.com/mdempsky/unconvert
 	go get -u github.com/sigma/gocyclo
+	go get -u github.com/mdempsky/unconvert
+	go get -u honnef.co/go/tools/cmd/gosimple
 	go get -u github.com/gordonklaus/ineffassign
 
 go_test:
