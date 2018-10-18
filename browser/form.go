@@ -219,7 +219,7 @@ func serializeForm(sel *goquery.Selection) (map[string]bool, url.Values, url.Val
 						if ok {
 							fields.Add(name, val)
 						} else {
-							fields.Add(name, "checked")
+							fields.Add(name, "on")
 						}
 					}
 				} else {
