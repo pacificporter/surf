@@ -595,7 +595,11 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 	if err != nil {
 		return err
 	}
-	dom, err := goquery.NewDocumentFromResponse(resp)
+	if resp == nil {
+		return errors.New("Response is nil")
+	}
+	defer resp.Body.Close()
+	dom, err := goquery.NewDocumentFromReader(resp.Body)
 	if err != nil {
 		return err
 	}
