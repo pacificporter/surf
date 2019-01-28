@@ -11,7 +11,7 @@ go_check:
 	echo -n ${NOVENDOR} | xargs -d ' ' -L1 golint  | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
 	gocyclo -over 20 ${NOVENDORX}
 	unconvert -v ${NOVENDORX} | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
-	gosimple ${NOVENDOR}
+	staticcheck ${NOVENDOR}
 	ineffassign ${NOVENDORX}
 
 go_tool_install:
@@ -22,7 +22,7 @@ go_tool_install:
 	go get -u github.com/Masterminds/glide
 	go get -u github.com/sigma/gocyclo
 	go get -u github.com/mdempsky/unconvert
-	go get -u honnef.co/go/tools/cmd/gosimple
+	go get -u github.com/dominikh/go-tools/tree/master/cmd/staticcheck
 	go get -u github.com/gordonklaus/ineffassign
 
 go_test:
