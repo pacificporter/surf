@@ -22,7 +22,7 @@ go_tool_install:
 	go get -u github.com/Masterminds/glide
 	go get -u github.com/sigma/gocyclo
 	go get -u github.com/mdempsky/unconvert
-	go get -u github.com/dominikh/go-tools/tree/master/cmd/staticcheck
+	go get -u honnef.co/go/tools/cmd/staticcheck
 	go get -u github.com/gordonklaus/ineffassign
 
 go_test:
