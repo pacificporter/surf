@@ -1,5 +1,5 @@
 hash: ea0310bccd7c06ff23fcbe6f607ee96ff19b3805349047c834c37e9c665509cb
-updated: 2018-12-19T10:37:02.031496453+09:00
+updated: 2019-01-28T11:47:38.111959734+09:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 680b6a57bda4f657485ad44bdea42342ead737bc
@@ -10,9 +10,9 @@ imports:
 - name: github.com/headzoo/ut
   version: a13b5a7a02cae96fe07e6b369a02d998b5be06b0
 - name: github.com/PuerkitoBio/goquery
-  version: 2d2796f41742ece03e8086188fa4db16a3a0b458
+  version: 3dcf72e6c17f694381a21592651ca1464ded0e10
 - name: github.com/shirou/gopsutil
-  version: 51e6519305e4871657c291a6281fcddc6364bbef
+  version: 7675aac4b0ec8e54975089785b081523f0fee2b2
   subpackages:
   - cpu
   - host
@@ -25,12 +25,12 @@ imports:
 - name: github.com/StackExchange/wmi
   version: e0a55b97c70558c92ce14085e41b35a894e93d3d
 - name: golang.org/x/net
-  version: e147a9138326bc0e9d4e179541ffd8af41cff8a9
+  version: d26f9f9a57f3fab6a695bec0d84433c2c50f8bbf
   subpackages:
   - html
   - html/atom
 - name: golang.org/x/sys
-  version: 074acd46bca67915925527c07849494d115e7c43
+  version: b90733256f2e882e81d52f9126de08df5615afd9
   subpackages:
   - unix
   - windows
