@@ -1,4 +1,4 @@
-box: pacificporter/golang:1.11.4-10.13.0
+box: pacificporter/golang:1.11.5-10.13.0
 build:
   steps:
     - script:
