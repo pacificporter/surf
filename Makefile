@@ -13,6 +13,7 @@ go_check:
 	unconvert -v ${NOVENDORX} | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
 	staticcheck ${NOVENDOR}
 	ineffassign ${NOVENDORX}
+	nilerr ${NOVENDORX}
 
 go_tool_install:
 	go get -u github.com/kisielk/errcheck
@@ -24,6 +25,7 @@ go_tool_install:
 	go get -u github.com/mdempsky/unconvert
 	go get -u honnef.co/go/tools/cmd/staticcheck
 	go get -u github.com/gordonklaus/ineffassign
+	go get -u github.com/gostaticanalysis/nilerr/cmd/nilerr
 
 go_test:
 	go test ${NOVENDOR}

@@ -1,4 +1,4 @@
-box: pacificporter/golang:1.11.5-10.13.0
+box: pacificporter/golang:1.12.1-10.13.0
 build:
   steps:
     - script:
@@ -46,6 +46,11 @@ build:
         cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
           staticcheck $(glide novendor -x)
+    - script:
+        name: nilerr
+        cwd: $GOPATH/src/github.com/pacificporter/surf
+        code: |
+          nilerr $(glide novendor -x)
     - script:
         name: go test
         cwd: $GOPATH/src/github.com/pacificporter/surf
