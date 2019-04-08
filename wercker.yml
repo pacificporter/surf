@@ -17,11 +17,6 @@ build:
         code: |
           go vet $(glide novendor)
     - script:
-        name: gosimple
-        cwd: $GOPATH/src/github.com/pacificporter/surf
-        code: |
-          gosimple $(glide novendor)
-    - script:
         name: errcheck
         cwd: $GOPATH/src/github.com/pacificporter/surf
         code: |
