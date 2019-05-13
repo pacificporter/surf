@@ -20,6 +20,13 @@ type Attribute int
 // AttributeMap represents a map of Attribute values.
 type AttributeMap map[Attribute]bool
 
+type File struct {
+	fileName string
+	data     io.Reader
+}
+
+type FileSet map[string]*File
+
 const (
 	// SendRefererAttribute instructs a Browser to send the Referer header.
 	SendReferer Attribute = iota
@@ -81,7 +88,7 @@ type Browsable interface {
 	PostForm(url string, data url.Values) error
 
 	// PostMultipart requests the given URL using the POST method with the given data using multipart/form-data format.
-	PostMultipart(u string, data url.Values) error
+	PostMultipart(u string, data url.Values, files FileSet) error
 
 	// Back loads the previously requested page.
 	Back() bool
@@ -224,13 +231,25 @@ func (bow *Browser) PostForm(u string, data url.Values) error {
 }
 
 // PostMultipart requests the given URL using the POST method with the given data using multipart/form-data format.
-func (bow *Browser) PostMultipart(u string, data url.Values) error {
+func (bow *Browser) PostMultipart(u string, data url.Values, files FileSet) error {
 	body := &bytes.Buffer{}
 	writer := multipart.NewWriter(body)
 
 	for k, vs := range data {
 		for _, v := range vs {
 			writer.WriteField(k, v)
+		}
+	}
+	for k, file := range files {
+		fw, err := writer.CreateFormFile(k, file.fileName)
+		if err != nil {
+			return err
+		}
+		if file.data != nil {
+			_, err := io.Copy(fw, file.data)
+			if err != nil {
+				return err
+			}
 		}
 	}
 	err := writer.Close()
