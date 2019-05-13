@@ -185,8 +185,11 @@ func TestSubmitMultipart(t *testing.T) {
 	f, err := bow.Form("[name='default']")
 	ut.AssertNil(err)
 
-	f.Input("comment", "my profile picture")
+	err = f.Input("comment", "my profile picture")
+	ut.AssertNil(err)
+
 	imgData, err := base64.StdEncoding.DecodeString(image)
+	ut.AssertNil(err)
 	err = f.File("image", "profile.png", bytes.NewBuffer(imgData))
 	ut.AssertNil(err)
 	err = f.Submit()
@@ -200,12 +203,14 @@ func setupTestServer(html string, t *testing.T) *httptest.Server {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if r.Method == "GET" {
-			fmt.Fprint(w, html)
+			_, err := fmt.Fprint(w, html)
+			ut.AssertNil(err)
 		} else {
 			ct := r.Header.Get("Content-Type")
 			if strings.LastIndex(ct, "multipart/form-data") != -1 {
 
-				r.ParseMultipartForm(1024 * 1024) // max 1MB ram
+				err := r.ParseMultipartForm(1024 * 1024) // max 1MB ram
+				ut.AssertNil(err)
 				values := url.Values{}
 				for k, av := range r.MultipartForm.Value {
 					for _, v := range av {
@@ -214,17 +219,20 @@ func setupTestServer(html string, t *testing.T) *httptest.Server {
 				}
 				for k, af := range r.MultipartForm.File {
 					for _, fh := range af {
-						values.Add(k, fmt.Sprintf("%s", fh.Filename))
+						values.Add(k, fh.Filename)
 						f, _ := fh.Open()
 						data, _ := ioutil.ReadAll(f)
 						val := base64.StdEncoding.EncodeToString(data)
 						values.Add(fh.Filename, val)
 					}
 				}
-				fmt.Fprint(w, values.Encode())
+				_, err = fmt.Fprint(w, values.Encode())
+				ut.AssertNil(err)
 			} else {
-				r.ParseForm()
-				fmt.Fprint(w, r.Form.Encode())
+				err := r.ParseForm()
+				ut.AssertNil(err)
+				_, err = fmt.Fprint(w, r.Form.Encode())
+				ut.AssertNil(err)
 			}
 
 		}
