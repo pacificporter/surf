@@ -583,9 +583,9 @@ func (bow *Browser) buildRequest(method, url string, ref *url.URL, body io.Reade
 		return nil, err
 	}
 	req.Header = bow.headers
-	req.Header.Add("User-Agent", bow.userAgent)
+	req.Header.Set("User-Agent", bow.userAgent)
 	if bow.attributes[SendReferer] && ref != nil {
-		req.Header.Add("Referer", ref.String())
+		req.Header.Set("Referer", ref.String())
 	}
 
 	return req, nil
