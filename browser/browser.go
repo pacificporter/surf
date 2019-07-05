@@ -72,6 +72,9 @@ type Browsable interface {
 	// AddRequestHeader adds a header the browser sends with each request.
 	AddRequestHeader(name, value string)
 
+	// SetRequestHeader sets a header the browser sends with each request.
+	SetRequestHeader(name, value string)
+
 	// Open requests the given URL using the GET method.
 	Open(url string) error
 
@@ -462,6 +465,11 @@ func (bow *Browser) AddRequestHeader(name, value string) {
 	bow.headers.Add(name, value)
 }
 
+// SetRequestHeader sets a header the browser sends with each request.
+func (bow *Browser) SetRequestHeader(name, value string) {
+	bow.headers.Set(name, value)
+}
+
 // ResolveUrl returns an absolute URL for a possibly relative URL.
 func (bow *Browser) ResolveUrl(u *url.URL) *url.URL {
 	return bow.Url().ResolveReference(u)
@@ -575,9 +583,9 @@ func (bow *Browser) buildRequest(method, url string, ref *url.URL, body io.Reade
 		return nil, err
 	}
 	req.Header = bow.headers
-	req.Header.Add("User-Agent", bow.userAgent)
+	req.Header.Set("User-Agent", bow.userAgent)
 	if bow.attributes[SendReferer] && ref != nil {
-		req.Header.Add("Referer", ref.String())
+		req.Header.Set("Referer", ref.String())
 	}
 
 	return req, nil
