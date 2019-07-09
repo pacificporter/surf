@@ -1,10 +1,10 @@
 hash: ea0310bccd7c06ff23fcbe6f607ee96ff19b3805349047c834c37e9c665509cb
-updated: 2019-06-13T10:46:39.107930968+09:00
+updated: 2019-07-09T10:57:45.903164902+09:00
 imports:
 - name: github.com/andybalholm/cascadia
   version: 680b6a57bda4f657485ad44bdea42342ead737bc
 - name: github.com/go-ole/go-ole
-  version: 97b6244175ae18ea6eef668034fd6565847501c9
+  version: 938323a72016e9cf84fa5fba7635089efb0ad87f
   subpackages:
   - oleutil
 - name: github.com/headzoo/ut
@@ -12,7 +12,7 @@ imports:
 - name: github.com/PuerkitoBio/goquery
   version: 3dcf72e6c17f694381a21592651ca1464ded0e10
 - name: github.com/shirou/gopsutil
-  version: 35f21af98a5eba8641d4ab3ba0d29e4bfc42260f
+  version: 6c106d33952d35d11bf65511971551232c14929a
   subpackages:
   - cpu
   - host
@@ -25,12 +25,12 @@ imports:
 - name: github.com/StackExchange/wmi
   version: cbe66965904dbe8a6cd589e2298e5d8b986bd7dd
 - name: golang.org/x/net
-  version: 3f473d35a33aa6fdd203e306dc439b797820e3f1
+  version: da137c7871d730100384dbcf36e6f8fa493aef5b
   subpackages:
   - html
   - html/atom
 - name: golang.org/x/sys
-  version: 93c9922d18aeb82498a065f07aec7ad7fa60dfb7
+  version: 04f50cda93cbb67f2afa353c52f342100e80e625
   subpackages:
   - unix
   - windows
