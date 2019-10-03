@@ -1,34 +1,38 @@
 .PHONY: init go_check go_tool_install go_test go_format go_init go_allcheck allcheck
 
-NOVENDOR:=$(shell glide novendor)
-NOVENDORX:=$(shell glide novendor -x)
-
 init: go_init
 
-go_check:
-	go vet ${NOVENDOR}
-	errcheck -ignore="Close|Run|Write" ${NOVENDOR}
-	echo -n ${NOVENDOR} | xargs -d ' ' -L1 golint  | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
-	gocyclo -over 20 ${NOVENDORX}
-	unconvert -v ${NOVENDORX} | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
-	staticcheck ${NOVENDOR}
-	ineffassign ${NOVENDORX}
-	nilerr ${NOVENDORX}
+go_check: go_static_check_tool_install
+	go vet ./...
+	errcheck -ignore="Close|Run|Write" ./...
+	golint ./... | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
+	gocyclo -over 20 .
+	unconvert -v . | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
+	staticcheck ./...
+	ineffassign .
+	nilerr .
 
-go_tool_install:
-	go get -u github.com/kisielk/errcheck
-	go get -u golang.org/x/lint/golint
-	go get -u golang.org/x/tools/cmd/goimports
-	go get -u github.com/tcnksm/gotests
-	go get -u github.com/Masterminds/glide
-	go get -u github.com/sigma/gocyclo
-	go get -u github.com/mdempsky/unconvert
-	go get -u honnef.co/go/tools/cmd/staticcheck
-	go get -u github.com/gordonklaus/ineffassign
-	go get -u github.com/gostaticanalysis/nilerr/cmd/nilerr
+STATIC_CHECK_TOOLS:=${GOBIN}/errcheck ${GOBIN}/golint ${GOBIN}/staticcheck ${GOBIN}/unconvert ${GOBIN}/ineffassign ${GOBIN}/gocyclo ${GOBIN}/nilerr
+.PHONY: go_static_check_tool_install
+go_static_check_tool_install: ${STATIC_CHECK_TOOLS}
+
+${GOBIN}/errcheck:
+	go build -o $@ github.com/kisielk/errcheck
+${GOBIN}/golint:
+	go build -o $@ golang.org/x/lint/golint
+${GOBIN}/staticcheck:
+	go build -o $@ honnef.co/go/tools/cmd/staticcheck
+${GOBIN}/unconvert:
+	go build -o $@ github.com/mdempsky/unconvert
+${GOBIN}/ineffassign:
+	go build -o $@ github.com/gordonklaus/ineffassign
+${GOBIN}/gocyclo:
+	go build -o $@ github.com/sigma/gocyclo
+${GOBIN}/nilerr:
+	go build -o $@ github.com/gostaticanalysis/nilerr/cmd/nilerr
 
 go_test:
-	go test ${NOVENDOR}
+	go test ./...
 
 go_format:
 	goimports -w=true .
