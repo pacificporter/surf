@@ -1,7 +1,0 @@
-package: github.com/pacificporter/surf
-import:
-- package: github.com/PuerkitoBio/goquery
-- package: github.com/shirou/gopsutil
-  subpackages:
-  - host
-- package: github.com/headzoo/ut
