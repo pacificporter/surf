@@ -1,53 +1,43 @@
-box: pacificporter/golang:1.12.9-10.13.0
+box: pacificporter/golang:1.13.1-10.13.0
 build:
   steps:
     - script:
-        name: copy source
-        code: |
-          mkdir -p $GOPATH/src/github.com/pacificporter
-          cp -ar $WERCKER_SOURCE_DIR/ $GOPATH/src/github.com/pacificporter/surf
-    - script:
-        name: glide install
-        cwd: $GOPATH/src/github.com/pacificporter/surf
-        code: |
-          glide install
-    - script:
         name: go vet
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          go vet $(glide novendor)
+          go vet ./...
     - script:
         name: errcheck
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          errcheck -ignore="Close|Run|Write" ${NOVENDOR}
+          errcheck -ignore="Close|Run|Write" ./...
     - script:
         name: golint
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          echo -n $(glide novendor) | xargs -d ' ' -L1 golint  | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
+          golint ./... | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
     - script:
         name: gocyclo
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          gocyclo -over 20 $(glide novendor -x)
+          gocyclo -over 20 .
     - script:
         name: ineffassign
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          ineffassign $(glide novendor -x)
+          ineffassign .
     - script:
         name: staticcheck
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          staticcheck $(glide novendor -x)
+          staticcheck ./...
     - script:
         name: nilerr
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          nilerr $(glide novendor -x)
+          nilerr .
     - script:
         name: go test
-        cwd: $GOPATH/src/github.com/pacificporter/surf
+        cwd: $WERCKER_SOURCE_DIR
         code: |
-          TZ=Japan go test $(glide novendor)
+          TZ=Japan go test ./...
