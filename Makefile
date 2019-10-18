@@ -10,7 +10,7 @@ go_check: go_static_check_tool_install
 	unconvert -v . | perl -e 'local $$/; $$o=<STDIN>; if ($$o eq "") {exit(0)}; print $$o; exit(1);'
 	staticcheck ./...
 	ineffassign .
-	nilerr .
+	nilerr ./...
 
 STATIC_CHECK_TOOLS:=${GOBIN}/errcheck ${GOBIN}/golint ${GOBIN}/staticcheck ${GOBIN}/unconvert ${GOBIN}/ineffassign ${GOBIN}/gocyclo ${GOBIN}/nilerr
 .PHONY: go_static_check_tool_install
