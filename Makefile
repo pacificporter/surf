@@ -1,3 +1,6 @@
+GOBIN?=$(shell go env GOBIN)
+GOBIN:=$(if ${GOBIN}, ${GOBIN}, ${GOPATH}/bin)
+
 .PHONY: init go_check go_tool_install go_test go_format go_init go_allcheck allcheck
 
 init: go_init
