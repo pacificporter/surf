@@ -13,6 +13,8 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/itchio/go-brotli/dec"
+
 	"github.com/pacificporter/surf/errors"
 	"github.com/pacificporter/surf/jar"
 )
@@ -642,6 +644,8 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 		}
 	case "deflate":
 		reader = flate.NewReader(resp.Body)
+	case "br":
+		reader = dec.NewBrotliReader(resp.Body)
 	default:
 		reader = resp.Body
 	}
