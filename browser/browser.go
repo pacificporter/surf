@@ -2,7 +2,10 @@ package browser
 
 import (
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -188,6 +191,9 @@ type Browser struct {
 
 	// transport is the browser connection transport.
 	transport *http.Transport
+
+	// body of the current page.
+	body []byte
 }
 
 // Open requests the given URL using the GET method.
@@ -626,10 +632,31 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 		return errors.New("Response is nil")
 	}
 	defer resp.Body.Close()
-	dom, err := goquery.NewDocumentFromReader(resp.Body)
+
+	var reader io.Reader
+	switch resp.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err = gzip.NewReader(resp.Body)
+		if err != nil {
+			return err
+		}
+	case "deflate":
+		reader = flate.NewReader(resp.Body)
+	default:
+		reader = resp.Body
+	}
+
+	bow.body, err = ioutil.ReadAll(reader)
 	if err != nil {
 		return err
 	}
+
+	buff := bytes.NewBuffer(bow.body)
+	dom, err := goquery.NewDocumentFromReader(buff)
+	if err != nil {
+		return err
+	}
+
 	bow.history.Push(bow.state)
 	bow.state = jar.NewHistoryState(req, resp, dom)
 	bow.postSend()
