@@ -633,7 +633,6 @@ func (bow *Browser) httpRequest(req *http.Request) (err error) {
 	if resp == nil {
 		return errors.New("Response is nil")
 	}
-	defer resp.Body.Close()
 
 	var reader io.ReadCloser
 	switch resp.Header.Get("Content-Encoding") {
