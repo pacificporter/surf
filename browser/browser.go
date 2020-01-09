@@ -635,21 +635,30 @@ func (bow *Browser) httpRequest(req *http.Request) (err error) {
 	}
 
 	var reader io.ReadCloser
+	var isWraped bool
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
 		if err != nil {
 			return err
 		}
+		isWraped = true
 	case "deflate":
 		reader = flate.NewReader(resp.Body)
+		isWraped = true
 	case "br":
 		reader = dec.NewBrotliReader(resp.Body)
+		isWraped = true
 	default:
 		reader = resp.Body
 	}
 	defer func() {
-		if cerr := reader.Close(); cerr != nil && err == nil {
+		if isWraped {
+			if cerr := reader.Close(); cerr != nil && err == nil {
+				err = cerr
+			}
+		}
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
 			err = cerr
 		}
 	}()
