@@ -2,7 +2,10 @@ package browser
 
 import (
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
 	"io"
+	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -10,6 +13,8 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
+	"github.com/itchio/go-brotli/dec"
+
 	"github.com/pacificporter/surf/errors"
 	"github.com/pacificporter/surf/jar"
 )
@@ -188,6 +193,9 @@ type Browser struct {
 
 	// transport is the browser connection transport.
 	transport *http.Transport
+
+	// body of the current page.
+	body []byte
 }
 
 // Open requests the given URL using the GET method.
@@ -616,7 +624,7 @@ func (bow *Browser) httpPOST(u *url.URL, ref *url.URL, contentType string, body 
 }
 
 // send uses the given *http.Request to make an HTTP request.
-func (bow *Browser) httpRequest(req *http.Request) error {
+func (bow *Browser) httpRequest(req *http.Request) (err error) {
 	bow.preSend()
 	resp, err := bow.buildClient().Do(req)
 	if err != nil {
@@ -625,11 +633,47 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 	if resp == nil {
 		return errors.New("Response is nil")
 	}
-	defer resp.Body.Close()
-	dom, err := goquery.NewDocumentFromReader(resp.Body)
+
+	var reader io.ReadCloser
+	var isWrapped bool
+	switch resp.Header.Get("Content-Encoding") {
+	case "gzip":
+		reader, err = gzip.NewReader(resp.Body)
+		if err != nil {
+			return err
+		}
+		isWrapped = true
+	case "deflate":
+		reader = flate.NewReader(resp.Body)
+		isWrapped = true
+	case "br":
+		reader = dec.NewBrotliReader(resp.Body)
+		isWrapped = true
+	default:
+		reader = resp.Body
+	}
+	defer func() {
+		if isWrapped {
+			if cerr := reader.Close(); cerr != nil && err == nil {
+				err = cerr
+			}
+		}
+		if cerr := resp.Body.Close(); cerr != nil && err == nil {
+			err = cerr
+		}
+	}()
+
+	bow.body, err = ioutil.ReadAll(reader)
 	if err != nil {
 		return err
 	}
+
+	buff := bytes.NewBuffer(bow.body)
+	dom, err := goquery.NewDocumentFromReader(buff)
+	if err != nil {
+		return err
+	}
+
 	bow.history.Push(bow.state)
 	bow.state = jar.NewHistoryState(req, resp, dom)
 	bow.postSend()
