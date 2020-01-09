@@ -624,7 +624,7 @@ func (bow *Browser) httpPOST(u *url.URL, ref *url.URL, contentType string, body 
 }
 
 // send uses the given *http.Request to make an HTTP request.
-func (bow *Browser) httpRequest(req *http.Request) error {
+func (bow *Browser) httpRequest(req *http.Request) (err error) {
 	bow.preSend()
 	resp, err := bow.buildClient().Do(req)
 	if err != nil {
@@ -635,7 +635,7 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 	}
 	defer resp.Body.Close()
 
-	var reader io.Reader
+	var reader io.ReadCloser
 	switch resp.Header.Get("Content-Encoding") {
 	case "gzip":
 		reader, err = gzip.NewReader(resp.Body)
@@ -649,6 +649,11 @@ func (bow *Browser) httpRequest(req *http.Request) error {
 	default:
 		reader = resp.Body
 	}
+	defer func() {
+		if cerr := reader.Close(); cerr != nil && err == nil {
+			err = cerr
+		}
+	}()
 
 	bow.body, err = ioutil.ReadAll(reader)
 	if err != nil {
