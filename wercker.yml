@@ -1,4 +1,7 @@
-box: pacificporter/golang:1.15.6-12.16.3
+box:
+  id:pacificporter/golang:1.15.6-12.16.3
+  username: $DOCKER_HUB_USERNAME
+  password: $DOCKER_HUB_PASSWORD
 build:
   steps:
     - script:
