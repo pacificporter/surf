@@ -7,10 +7,9 @@ build:
         code: |
           go vet ./...
     - script:
-        name: errcheck
-        cwd: $WERCKER_SOURCE_DIR
+        name: install linter
         code: |
-          errcheck -ignore="Close|Run|Write" ./...
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
     - script:
         name: golint
         cwd: $WERCKER_SOURCE_DIR
