@@ -6,9 +6,6 @@ run:
   # "/" will be replaced by current OS file path separator to properly work
   # on Windows.
   skip-dirs:
-    - beauty/gen
-    - mediaapi/gen
-    - posapi/gen
   # timeout for analysis, e.g. 30s, 5m, default is 1m
   timeout: 5m
 
@@ -38,4 +35,3 @@ linters-settings:
 
   errcheck:
     ignore: fmt:.*,io/ioutil:^Read,^Close|^Write|^Shutdown
-
