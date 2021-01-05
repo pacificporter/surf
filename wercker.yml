@@ -2,19 +2,19 @@ box: pacificporter/golang:1.15.6-12.16.3
 build:
   steps:
     - script:
-        name: go vet
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          go vet ./...
-    - script:
         name: install linter
         code: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
     - script:
         name: lint check
-        cwd: $GOPATH/src/github.com/pacificporter/kanzashi2
+        cwd: $WERCKER_SOURCE_DIR
         code: |
           golangci-lint run
+    - script:
+        name: go vet
+        cwd: $WERCKER_SOURCE_DIR
+        code: |
+          go vet ./...
     - script:
         name: go test
         cwd: $WERCKER_SOURCE_DIR
