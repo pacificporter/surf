@@ -11,30 +11,10 @@ build:
         code: |
           curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
     - script:
-        name: golint
-        cwd: $WERCKER_SOURCE_DIR
+        name: lint check
+        cwd: $GOPATH/src/github.com/pacificporter/kanzashi2
         code: |
-          golint ./... | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
-    - script:
-        name: gocyclo
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          gocyclo -over 20 .
-    - script:
-        name: ineffassign
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          ineffassign .
-    - script:
-        name: staticcheck
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          staticcheck ./...
-    - script:
-        name: nilerr
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          nilerr ./...
+          golangci-lint run
     - script:
         name: go test
         cwd: $WERCKER_SOURCE_DIR
