@@ -1,41 +1,23 @@
-box: pacificporter/golang:1.14.6-12.16.3
+box:
+  id: pacificporter/golang:1.15.6-12.16.3
+  username: $DOCKER_HUB_USERNAME
+  password: $DOCKER_HUB_PASSWORD
 build:
   steps:
+    - script:
+        name: install linter
+        code: |
+          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
+    - script:
+        name: lint check
+        cwd: $WERCKER_SOURCE_DIR
+        code: |
+          golangci-lint run
     - script:
         name: go vet
         cwd: $WERCKER_SOURCE_DIR
         code: |
           go vet ./...
-    - script:
-        name: errcheck
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          errcheck -ignore="Close|Run|Write" ./...
-    - script:
-        name: golint
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          golint ./... | egrep -v 'Id.* should be .*ID|Url| should have comment | comment on exported ' | perl -e 'local $/; $o=<STDIN>; if ($o eq "") {exit(0)}; print $o; exit(1);'
-    - script:
-        name: gocyclo
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          gocyclo -over 20 .
-    - script:
-        name: ineffassign
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          ineffassign .
-    - script:
-        name: staticcheck
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          staticcheck ./...
-    - script:
-        name: nilerr
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          nilerr ./...
     - script:
         name: go test
         cwd: $WERCKER_SOURCE_DIR
