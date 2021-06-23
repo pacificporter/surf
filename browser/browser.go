@@ -344,8 +344,8 @@ func (bow *Browser) Forms() []Submittable {
 	}
 
 	forms := make([]Submittable, len)
-	sel.Each(func(_ int, s *goquery.Selection) {
-		forms = append(forms, NewForm(bow, s))
+	sel.Each(func(i int, s *goquery.Selection) {
+		forms[i] = NewForm(bow, s)
 	})
 	return forms
 }

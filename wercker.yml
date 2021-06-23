@@ -5,15 +5,6 @@ box:
 build:
   steps:
     - script:
-        name: install linter
-        code: |
-          curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.30.0
-    - script:
-        name: lint check
-        cwd: $WERCKER_SOURCE_DIR
-        code: |
-          golangci-lint run
-    - script:
         name: go vet
         cwd: $WERCKER_SOURCE_DIR
         code: |
