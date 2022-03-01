@@ -1,5 +1,5 @@
 box:
-  id: pacificporter/golang:1.17.1-14.15.4
+  id: pacificporter/golang:1.17.7-14.15.4-2
   username: $DOCKER_HUB_USERNAME
   password: $DOCKER_HUB_PASSWORD
 build:
