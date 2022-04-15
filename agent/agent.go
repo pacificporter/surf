@@ -12,7 +12,7 @@ import (
 	"strings"
 	"text/template"
 
-	"github.com/shirou/gopsutil/host"
+	"github.com/shirou/gopsutil/v3/host"
 )
 
 var (
