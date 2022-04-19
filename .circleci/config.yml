@@ -2,15 +2,59 @@
 # See: https://circleci.com/docs/2.0/configuration-reference
 version: 2.1
 
+orbs:
+  slack: circleci/slack@4.9.3
+
+commands:
+  notify_slack_pass:
+    steps:
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: pass
+          custom: |
+            {
+              "text": "${CIRCLE_JOB} for ${CIRCLE_PROJECT_REPONAME} by ${CIRCLE_USERNAME} has passed on branch ${CIRCLE_BRANCH}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":white_check_mark: <${CIRCLE_BUILD_URL} | ${CIRCLE_JOB}> for ${CIRCLE_PROJECT_REPONAME} by ${CIRCLE_USERNAME} has passed on branch ${CIRCLE_BRANCH}"
+                  }
+                }
+              ]
+            }
+  notify_slack_fail:
+    steps:
+      - slack/notify:
+          channel: $SLACK_DEFAULT_CHANNEL
+          event: fail
+          custom: |
+            {
+              "text": "${CIRCLE_JOB} for ${CIRCLE_PROJECT_REPONAME} by ${CIRCLE_USERNAME} has failed on branch ${CIRCLE_BRANCH}",
+              "blocks": [
+                {
+                  "type": "section",
+                  "text": {
+                    "type": "mrkdwn",
+                    "text": ":exclamation: <${CIRCLE_BUILD_URL} | ${CIRCLE_JOB}> for ${CIRCLE_PROJECT_REPONAME} by ${CIRCLE_USERNAME} has failed on branch ${CIRCLE_BRANCH}"
+                }
+                }
+              ]
+            }
+
 # Define a job to be invoked later in a workflow.
 # See: https://circleci.com/docs/2.0/configuration-reference/#jobs
 jobs:
   build:
-    working_directory: ~/repo
+    working_directory: ~/surt
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: circleci/golang:1.15.8
+      - image: pacificporter/golang:1.17.7-14.15.4-2
+        auth:
+          username: $DOCKER_HUB_USERNAME
+          password: $DOCKER_HUB_PASSWORD
     # Add steps to the job
     # See: https://circleci.com/docs/2.0/configuration-reference/#steps
     steps:
@@ -26,12 +70,17 @@ jobs:
           paths:
             - "/go/pkg/mod"
       - run:
-          name: Run tests
+          name: go vet
           command: |
-            mkdir -p /tmp/test-reports
-            gotestsum --junitfile /tmp/test-reports/unit-tests.xml
+            go vet ./...
+      - run:
+          name: go test
+          command: |
+            TZ=Japan go test ./...
       - store_test_results:
           path: /tmp/test-reports
+      - notify_slack_pass
+      - notify_slack_fail
 
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
