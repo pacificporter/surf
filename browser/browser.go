@@ -14,7 +14,6 @@ import (
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/itchio/go-brotli/dec"
-
 	"github.com/pacificporter/surf/errors"
 	"github.com/pacificporter/surf/jar"
 )
@@ -70,6 +69,9 @@ type Browsable interface {
 
 	// SetHeadersJar sets the headers the browser sends with each request.
 	SetHeadersJar(h http.Header)
+
+	// SetTimeout sets the timeout for requests.
+	SetTimeout(t time.Duration)
 
 	// SetTransport sets the Transport of the browser. It can be used for use Proxy.
 	SetTransport(t *http.Transport)
@@ -190,6 +192,9 @@ type Browser struct {
 
 	// refresh is a timer used to meta refresh pages.
 	refresh *time.Timer
+
+	// timeout is the browser timeout
+	timeout time.Duration
 
 	// transport is the browser connection transport.
 	transport *http.Transport
@@ -463,6 +468,12 @@ func (bow *Browser) SetHeadersJar(h http.Header) {
 	bow.headers = h
 }
 
+// SetTransport sets the http library transport mechanism for each request.
+// SetTimeout sets the timeout for requests.
+func (bow *Browser) SetTimeout(t time.Duration) {
+	bow.timeout = t
+}
+
 // SetTransport sets the Transport of the browser. It can be used for set Proxy.
 func (bow *Browser) SetTransport(t *http.Transport) {
 	bow.transport = t
@@ -579,6 +590,7 @@ func (bow *Browser) buildClient() *http.Client {
 	if bow.transport != nil {
 		client.Transport = bow.transport
 	}
+	client.Timeout = bow.timeout
 
 	return client
 }
