@@ -51,7 +51,7 @@ jobs:
     # Specify the execution environment. You can specify an image from Dockerhub or use one of our Convenience Images from CircleCI's Developer Hub.
     # See: https://circleci.com/docs/2.0/configuration-reference/#docker-machine-macos-windows-executor
     docker:
-      - image: pacificporter/golang:1.19.4-14.21.1
+      - image: pacificporter/golang:1.20.1-14.21.2
         auth:
           username: $DOCKER_HUB_USERNAME
           password: $DOCKER_HUB_PASSWORD

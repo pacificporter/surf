@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"encoding/base64"
 	"fmt"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
@@ -221,7 +221,7 @@ func setupTestServer(html string, t *testing.T) *httptest.Server {
 					for _, fh := range af {
 						values.Add(k, fh.Filename)
 						f, _ := fh.Open()
-						data, _ := ioutil.ReadAll(f)
+						data, _ := io.ReadAll(f)
 						val := base64.StdEncoding.EncodeToString(data)
 						values.Add(fh.Filename, val)
 					}

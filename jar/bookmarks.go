@@ -2,7 +2,6 @@ package jar
 
 import (
 	"encoding/json"
-	"io/ioutil"
 	"os"
 
 	"github.com/pacificporter/surf/errors"
@@ -108,7 +107,7 @@ func NewFileBookmarks(file string) (*FileBookmarks, error) {
 	if !util.FileExists(file) {
 		bookmarks = make(BookmarksMap, initialBookmarksCapacity)
 	} else {
-		fin, err := ioutil.ReadFile(file)
+		fin, err := os.ReadFile(file)
 		if err != nil {
 			return nil, err
 		}
