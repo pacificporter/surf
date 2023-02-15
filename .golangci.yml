@@ -34,4 +34,4 @@ linters-settings:
     min-complexity: 25
 
   errcheck:
-    ignore: fmt:.*,io/ioutil:^Read,^Close|^Write|^Shutdown
+    ignore: fmt:.*,^Close|^Write|^Shutdown
