@@ -5,7 +5,6 @@ import (
 	"compress/flate"
 	"compress/gzip"
 	"io"
-	"io/ioutil"
 	"mime/multipart"
 	"net/http"
 	"net/url"
@@ -675,7 +674,7 @@ func (bow *Browser) httpRequest(req *http.Request) (err error) {
 		}
 	}()
 
-	bow.body, err = ioutil.ReadAll(reader)
+	bow.body, err = io.ReadAll(reader)
 	if err != nil {
 		return err
 	}
