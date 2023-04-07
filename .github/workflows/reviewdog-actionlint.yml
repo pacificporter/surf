@@ -1,0 +1,12 @@
+name: reviewdog (actionlint)
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+    paths:
+      - '.github/workflows/**'
+  workflow_dispatch:
+
+jobs:
+  actionlint:
+    uses: pacificporter/github-actions/.github/workflows/reviewdog-actionlint.yml@main
