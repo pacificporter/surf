@@ -167,7 +167,7 @@ func TestImages(t *testing.T) {
 	images := bow.Images()
 	ut.AssertEquals(2, len(images))
 	ut.AssertEquals("imgur-image", images[0].ID)
-	ut.AssertEquals("http://i.imgur.com/HW4bJtY.jpg", images[0].URL.String())
+	ut.AssertEquals("http://placehold.jp/150x150.png", images[0].URL.String())
 	ut.AssertEquals("", images[0].Alt)
 	ut.AssertEquals("It's a...", images[0].Title)
 
@@ -247,7 +247,7 @@ var htmlPage1 = `<!doctype html>
 	</head>
 	<body>
 		<p>Hello, Surf!</p>
-		<img src="http://i.imgur.com/HW4bJtY.jpg" id="imgur-image" title="It's a..." />
+		<img src="http://placehold.jp/150x150.png" id="imgur-image" title="It's a..." />
 		<img src="/Cxagv.jpg" alt="A picture" />
 
 		<p>Click the link below.</p>

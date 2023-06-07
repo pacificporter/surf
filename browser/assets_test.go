@@ -12,7 +12,7 @@ func TestDownload(t *testing.T) {
 	ut.Run(t)
 
 	out := &bytes.Buffer{}
-	u, _ := url.Parse("http://i.imgur.com/HW4bJtY.jpg")
+	u, _ := url.Parse("http://placehold.jp/150x150.png")
 	asset := NewImageAsset(u, "", "", "")
 	l, err := DownloadAsset(asset, out)
 	ut.AssertNil(err)
@@ -24,8 +24,8 @@ func TestDownloadAsync(t *testing.T) {
 	ut.Run(t)
 
 	ch := make(AsyncDownloadChannel, 1)
-	u1, _ := url.Parse("http://i.imgur.com/HW4bJtY.jpg")
-	u2, _ := url.Parse("http://i.imgur.com/HkPOzEH.jpg")
+	u1, _ := url.Parse("http://placehold.jp/150x150.png")
+	u2, _ := url.Parse("http://placehold.jp/3d4070/ffffff/150x150.png")
 	asset1 := NewImageAsset(u1, "", "", "")
 	asset2 := NewImageAsset(u2, "", "", "")
 	out1 := &bytes.Buffer{}
