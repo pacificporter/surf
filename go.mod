@@ -3,7 +3,7 @@ module github.com/pacificporter/surf
 go 1.21
 
 require (
-	github.com/PuerkitoBio/goquery v1.8.0
+	github.com/PuerkitoBio/goquery v1.8.1
 	github.com/headzoo/ut v0.0.0-20181013193318-a13b5a7a02ca
 	github.com/itchio/go-brotli v0.0.0-20190702114328-3f28d645a45c
 	github.com/shirou/gopsutil/v3 v3.22.9
@@ -17,6 +17,6 @@ require (
 	github.com/tklauser/go-sysconf v0.3.10 // indirect
 	github.com/tklauser/numcpus v0.4.0 // indirect
 	github.com/yusufpapurcu/wmi v1.2.2 // indirect
-	golang.org/x/net v0.0.0-20210916014120-12bc252f5db8 // indirect
-	golang.org/x/sys v0.0.0-20220722155257-8c9f86f7a55f // indirect
+	golang.org/x/net v0.7.0 // indirect
+	golang.org/x/sys v0.5.0 // indirect
 )
