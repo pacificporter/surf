@@ -1,5 +1,18 @@
 version: 2
 updates:
+  - package-ecosystem: 'gomod'
+    directory: '/'
+    groups:
+      gomod:
+        patterns:
+          - '*'
+        update-types:
+          - minor
+          - patch
+    schedule:
+      interval: weekly
+    reviewers:
+      - pacificporter/developers
   - package-ecosystem: github-actions
     directory: /
     labels:
