@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  pull_request:
+    types: [opened, synchronize]
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+env:
+  TZ: "Asia/Tokyo"
+
+jobs:
+  go-build-and-test:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          check-latest: true
+          go-version-file: go.mod
+
+      - name: Go build
+        run: go build ./...
+
+      - name: Go Vet
+        run: go vet ./...
+
+      - name: Go test
+        env:
+          ENVIRONMENT: test
+        run: go test -p=1 ./...
