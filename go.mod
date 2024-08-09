@@ -1,6 +1,6 @@
 module github.com/pacificporter/surf
 
-go 1.22.5
+go 1.22.6
 
 require (
 	github.com/PuerkitoBio/goquery v1.9.2
