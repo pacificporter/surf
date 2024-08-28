@@ -73,7 +73,7 @@ type Browsable interface {
 	SetTimeout(t time.Duration)
 
 	// SetTransport sets the Transport of the browser. It can be used for use Proxy.
-	SetTransport(t *http.Transport)
+	SetTransport(t http.RoundTripper)
 
 	// AddRequestHeader adds a header the browser sends with each request.
 	AddRequestHeader(name, value string)
@@ -196,7 +196,7 @@ type Browser struct {
 	timeout time.Duration
 
 	// transport is the browser connection transport.
-	transport *http.Transport
+	transport http.RoundTripper
 
 	// body of the current page.
 	body []byte
@@ -474,7 +474,7 @@ func (bow *Browser) SetTimeout(t time.Duration) {
 }
 
 // SetTransport sets the Transport of the browser. It can be used for set Proxy.
-func (bow *Browser) SetTransport(t *http.Transport) {
+func (bow *Browser) SetTransport(t http.RoundTripper) {
 	bow.transport = t
 }
 
