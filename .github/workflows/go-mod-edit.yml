@@ -1,0 +1,13 @@
+name: go mod edit
+
+on:
+  schedule:
+    - cron: '0 0 * * 1'
+  workflow_dispatch:
+
+jobs:
+  go-mod-edit:
+    uses: pacificporter/github-actions/.github/workflows/go-mod-edit.yml@main
+    secrets:
+      APP_ID: ${{ secrets.APP_ID }}
+      APP_PRIVATE_KEY: ${{ secrets.APP_PRIVATE_KEY }}
