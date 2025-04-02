@@ -9,6 +9,10 @@ updates:
         update-types:
           - minor
           - patch
+    labels:
+      - dependencies
+      - go
+      - no-bump-version
     schedule:
       interval: weekly
     reviewers:
