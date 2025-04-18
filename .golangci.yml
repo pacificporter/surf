@@ -35,7 +35,7 @@ linters:
   settings:
     errcheck:
       exclude-functions:
-        - fmt:.*,^Close|^Write|^Shutdown
+        - (*mime/multipart.Writer).WriteField
     gocyclo:
       min-complexity: 25
   exclusions:
