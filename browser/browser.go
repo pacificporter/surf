@@ -252,7 +252,9 @@ func (bow *Browser) PostMultipart(u string, data url.Values, files FileSet) erro
 
 	for k, vs := range data {
 		for _, v := range vs {
-			writer.WriteField(k, v)
+			if err := writer.WriteField(k, v); err != nil {
+				return err
+			}
 		}
 	}
 	for k, file := range files {
