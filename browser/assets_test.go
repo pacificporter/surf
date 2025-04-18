@@ -38,11 +38,12 @@ func TestDownloadAsync(t *testing.T) {
 	for ; queue > 0; queue-- {
 		result := <-ch
 		ut.AssertGreaterThan(0, int(result.Size))
-		if result.Asset == asset1 {
+		switch result.Asset {
+		case asset1:
 			ut.AssertEquals(int(result.Size), out1.Len())
-		} else if result.Asset == asset2 {
+		case asset2:
 			ut.AssertEquals(int(result.Size), out2.Len())
-		} else {
+		default:
 			t.Failed()
 		}
 	}
