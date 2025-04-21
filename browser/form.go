@@ -229,14 +229,15 @@ func serializeForm(sel *goquery.Selection) (map[string]bool, url.Values, url.Val
 		if ok {
 			typ, ok := s.Attr("type")
 			if ok {
-				if typ == "submit" {
+				switch typ {
+				case "submit":
 					val, ok := s.Attr("value")
 					if ok {
 						buttons.Add(name, val)
 					} else {
 						buttons.Add(name, "")
 					}
-				} else if typ == "radio" || typ == "checkbox" {
+				case "radio", "checkbox":
 					definedFields[name] = true
 					_, ok := s.Attr("checked")
 					if ok {
@@ -247,9 +248,9 @@ func serializeForm(sel *goquery.Selection) (map[string]bool, url.Values, url.Val
 							fields.Add(name, "on")
 						}
 					}
-				} else if typ == "file" {
+				case "file":
 					files[name] = &File{}
-				} else {
+				default:
 					definedFields[name] = true
 					val, ok := s.Attr("value")
 					if ok {

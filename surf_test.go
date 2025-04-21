@@ -15,9 +15,10 @@ import (
 func TestGet(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
-		if req.URL.Path == "/page1" {
+		switch req.URL.Path {
+		case "/page1":
 			_, _ = fmt.Fprint(w, htmlPage1)
-		} else if req.URL.Path == "/page2" {
+		case "/page2":
 			_, _ = fmt.Fprint(w, htmlPage2)
 		}
 	}))
@@ -115,9 +116,10 @@ func TestBookmarks(t *testing.T) {
 func TestClick(t *testing.T) {
 	ut.Run(t)
 	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		if r.URL.Path == "/" {
+		switch r.URL.Path {
+		case "/":
 			_, _ = fmt.Fprint(w, htmlPage1)
-		} else if r.URL.Path == "/page2" {
+		case "/page2":
 			_, _ = fmt.Fprint(w, htmlPage1)
 		}
 	}))
