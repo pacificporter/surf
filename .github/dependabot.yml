@@ -11,8 +11,6 @@ updates:
           - patch
     schedule:
       interval: weekly
-    reviewers:
-      - pacificporter/developers
   - package-ecosystem: github-actions
     directory: /
     labels:
@@ -21,5 +19,3 @@ updates:
       - no-bump-version
     schedule:
       interval: daily
-    reviewers:
-      - pacificporter/developers
