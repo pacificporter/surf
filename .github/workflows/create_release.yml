@@ -19,7 +19,7 @@ jobs:
           fetch-depth: 0
       - name: Calculate next version
         id: tag_version
-        uses: PaulHatch/semantic-version@v6.0.2
+        uses: PaulHatch/semantic-version@v6.0.4
       - name: Show calculated version
         env:
           VERSION_TAG: ${{ steps.tag_version.outputs.version_tag }}
