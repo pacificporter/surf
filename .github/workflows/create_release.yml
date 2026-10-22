@@ -10,18 +10,34 @@ jobs:
   create-release:
     runs-on: ubuntu-24.04
     if: ${{ github.event.pull_request.merged == true && !contains(github.event.pull_request.labels.*.name, 'no-bump-version') }}
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v7
-      - name: Bump version and push tag
-        id: tag_version
-        uses: mathieudutour/github-tag-action@v6.2
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+      - name: Calculate next version
+        id: tag_version
+        uses: PaulHatch/semantic-version@v6.0.2
+      - name: Show calculated version
+        env:
+          VERSION_TAG: ${{ steps.tag_version.outputs.version_tag }}
+          VERSION_TYPE: ${{ steps.tag_version.outputs.version_type }}
+          PREVIOUS_VERSION: ${{ steps.tag_version.outputs.previous_version }}
+          IS_TAGGED: ${{ steps.tag_version.outputs.is_tagged }}
+        run: |
+          echo "version_tag:      $VERSION_TAG"
+          echo "version_type:     $VERSION_TYPE"
+          echo "previous_version: $PREVIOUS_VERSION"
+          echo "is_tagged:        $IS_TAGGED"
       - name: Publish a GitHub release
+        if: steps.tag_version.outputs.is_tagged != 'true'
         uses: softprops/action-gh-release@v3
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.tag_version.outputs.new_tag }}
+          tag_name: ${{ steps.tag_version.outputs.version_tag }}
+          target_commitish: ${{ github.event.pull_request.merge_commit_sha }}
           name: ${{ github.event.pull_request.title }}
           generate_release_notes: true
