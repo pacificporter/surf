@@ -18,3 +18,26 @@ jobs:
           filter_mode: nofilter
           reporter: github-pr-review
           fail_on_error: true
+
+  # TODO: create_release.yml の PaulHatch/semantic-version 移行の検証用。確認後に削除する
+  semantic-version:
+    name: semantic-version
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - name: Calculate next version
+        id: tag_version
+        uses: PaulHatch/semantic-version@v6.0.2
+      - name: Show calculated version
+        env:
+          VERSION_TAG: ${{ steps.tag_version.outputs.version_tag }}
+          VERSION_TYPE: ${{ steps.tag_version.outputs.version_type }}
+          PREVIOUS_VERSION: ${{ steps.tag_version.outputs.previous_version }}
+          IS_TAGGED: ${{ steps.tag_version.outputs.is_tagged }}
+        run: |
+          echo "version_tag:      $VERSION_TAG"
+          echo "version_type:     $VERSION_TYPE"
+          echo "previous_version: $PREVIOUS_VERSION"
+          echo "is_tagged:        $IS_TAGGED"
