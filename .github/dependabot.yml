@@ -9,6 +9,8 @@ updates:
         update-types:
           - minor
           - patch
+    cooldown:
+      default-days: 7
     schedule:
       interval: weekly
   - package-ecosystem: github-actions
@@ -17,5 +19,7 @@ updates:
       - dependencies
       - github_actions
       - no-bump-version
+    cooldown:
+      default-days: 7
     schedule:
       interval: daily
