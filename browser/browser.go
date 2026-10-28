@@ -12,7 +12,7 @@ import (
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/itchio/go-brotli/dec"
+	"github.com/andybalholm/brotli"
 	"github.com/pacificporter/surf/errors"
 	"github.com/pacificporter/surf/jar"
 )
@@ -658,7 +658,7 @@ func (bow *Browser) httpRequest(req *http.Request) (err error) {
 		reader = flate.NewReader(resp.Body)
 		isWrapped = true
 	case "br":
-		reader = dec.NewBrotliReader(resp.Body)
+		reader = io.NopCloser(brotli.NewReader(resp.Body))
 		isWrapped = true
 	default:
 		reader = resp.Body

@@ -2,11 +2,15 @@ package surf
 
 import (
 	"bytes"
+	"compress/flate"
+	"compress/gzip"
 	"fmt"
+	"io"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
+	"github.com/andybalholm/brotli"
 	"github.com/headzoo/ut"
 	"github.com/pacificporter/surf/browser"
 	"github.com/pacificporter/surf/jar"
@@ -42,6 +46,48 @@ func TestGet(t *testing.T) {
 	ok = bow.Back()
 	ut.AssertFalse(ok)
 	ut.AssertEquals("Surf Page 1", bow.Title())
+}
+
+func TestContentEncoding(t *testing.T) {
+	ut.Run(t)
+	writers := map[string]func(io.Writer) io.WriteCloser{
+		"gzip": func(w io.Writer) io.WriteCloser { return gzip.NewWriter(w) },
+		"deflate": func(w io.Writer) io.WriteCloser {
+			fw, _ := flate.NewWriter(w, flate.DefaultCompression)
+			return fw
+		},
+		"br": func(w io.Writer) io.WriteCloser { return brotli.NewWriter(w) },
+	}
+	ts := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, req *http.Request) {
+		encoding := req.URL.Query().Get("encoding")
+		if encoding == "broken" {
+			w.Header().Set("Content-Encoding", "br")
+			_, _ = fmt.Fprint(w, "not brotli data")
+			return
+		}
+		newWriter, ok := writers[encoding]
+		if !ok {
+			_, _ = fmt.Fprint(w, htmlPage1)
+			return
+		}
+		w.Header().Set("Content-Encoding", encoding)
+		cw := newWriter(w)
+		_, _ = fmt.Fprint(cw, htmlPage1)
+		_ = cw.Close()
+	}))
+	defer ts.Close()
+
+	for _, encoding := range []string{"", "gzip", "deflate", "br"} {
+		bow := NewBrowser()
+		err := bow.Open(ts.URL + "/?encoding=" + encoding)
+		ut.AssertNil(err)
+		ut.AssertEquals("Surf Page 1", bow.Title())
+		ut.AssertContains("<p>Hello, Surf!</p>", bow.Body())
+	}
+
+	bow := NewBrowser()
+	err := bow.Open(ts.URL + "/?encoding=broken")
+	ut.AssertNotNil(err)
 }
 
 func TestDownload(t *testing.T) {
