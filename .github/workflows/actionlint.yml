@@ -6,6 +6,10 @@ on:
     paths:
       - '.github/workflows/**'
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
   actionlint:
     name: actionlint
@@ -17,4 +21,4 @@ jobs:
           level: warning
           filter_mode: nofilter
           reporter: github-pr-review
-          fail_on_error: true
+          fail_level: any
