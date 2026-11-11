@@ -21,4 +21,4 @@ jobs:
           level: warning
           filter_mode: nofilter
           reporter: github-pr-review
-          fail_on_error: true
+          fail_level: any
