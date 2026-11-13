@@ -4,8 +4,8 @@ go 1.25.0
 
 require (
 	github.com/PuerkitoBio/goquery v1.13.0
+	github.com/andybalholm/brotli v1.2.7
 	github.com/headzoo/ut v0.0.0-20181013193318-a13b5a7a02ca
-	github.com/itchio/go-brotli v0.0.0-20190702114328-3f28d645a45c
 	github.com/shirou/gopsutil/v3 v3.24.5
 )
 
